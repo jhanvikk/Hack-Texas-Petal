@@ -1,26 +1,56 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  
+  /* Petal Warmth Design Tokens */
+  --bg-sand: #FAF6F0;
+  --bg-petal: #FFF5F5;
+  --bg-surface: #FFFFFF;
+  --bg-surface-elevated: #FFFFFF;
+  
+  --primary-rose: #D9534F;
+  --primary-rose-hover: #C54541;
+  --primary-rose-light: #FDE8E7;
+  
+  --accent-sage: #4D7C59;
+  --accent-sage-light: #EBF3ED;
+  
+  --accent-terracotta: #C85A32;
+  --accent-terracotta-light: #FDF0E9;
+  
+  --text-main: #2C2220;
+  --text-muted: #6B5C58;
+  --text-soft: #998884;
+  
+  --border-warm: #EFE6DC;
+  --border-rose: #FAD4D2;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-system);
+  background-color: var(--bg-sand);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Accessible tap targets */
+button, a, input, textarea, select {
+  touch-action: manipulation;
+}
+
+/* Custom scrollbar for chat */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #E5DCD2;
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #CFC1B3;
 }
