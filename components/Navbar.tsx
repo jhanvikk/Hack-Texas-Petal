@@ -67,7 +67,7 @@ export function Navbar({
 
       {/* Primary Navigation Tabs */}
       <nav className="max-w-2xl mx-auto px-2 pb-[3px]">
-        <div className="grid grid-cols-6 gap-1 p-[3px] bg-[#dc9ea6] rounded-2xl border border-[#d89ba3]">
+        <div className="grid grid-cols-5 gap-1 p-[3px] bg-[#dc9ea6] rounded-2xl border border-[#d89ba3]">
           {/* Story Tab */}
           <button
             type="button"
@@ -126,20 +126,6 @@ export function Navbar({
           >
             <Stethoscope className="w-4 h-4" />
             <span>Care</span>
-          </button>
-
-          {/* Clinics Tab */}
-          <button
-            type="button"
-            onClick={() => setActiveTab("clinics")}
-            className={`flex items-center justify-center gap-1 py-[7.5px] px-1 rounded-xl text-[11px] sm:text-sm font-semibold transition-all cursor-pointer ${
-              activeTab === "clinics"
-                ? "bg-white text-[#D9534F] shadow-xs"
-                : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"
-            }`}
-          >
-            <Stethoscope className="w-4 h-4 shrink-0" />
-            <span>Clinics</span>
           </button>
 
           {/* Settings Tab */}
