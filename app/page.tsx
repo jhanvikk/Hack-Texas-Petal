@@ -123,7 +123,7 @@ export default function PetalApp() {
 
   return (
     <AgeGate>
-      <div className="min-h-screen bg-[#FAF6F0] flex flex-col selection:bg-[#FDE8E7] selection:text-[#9F1239]">
+      <div className="min-h-screen bg-[#e6abb2] flex flex-col selection:bg-[#FDE8E7] selection:text-[#9F1239]">
         {/* Navigation Bar */}
         <Navbar
           activeTab={activeTab}

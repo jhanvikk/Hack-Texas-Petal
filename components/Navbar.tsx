@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Heart, Users, MessageCircle, Settings, ShieldCheck, LifeBuoy } from "lucide-react";
+import { PetalLogo } from "@/components/PetalLogo";
 
 export type NavTab = "story" | "matches" | "chat" | "settings";
 
@@ -21,23 +22,21 @@ export function Navbar({
   onOpenEmergencyModal,
 }: NavbarProps) {
   return (
-    <header className="sticky top-0 z-40 bg-[#FAF6F0]/90 backdrop-blur-md border-b border-[#EFE6DC]">
+    <header className="sticky top-0 z-40 bg-[#e6abb2]/95 backdrop-blur-md border-b border-[#d89ba3]">
       <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
         {/* Brand */}
         <div className="flex items-center gap-2.5">
           <button
             onClick={() => setActiveTab("story")}
-            className="flex items-center gap-2 group text-left cursor-pointer"
+            className="flex items-center gap-2.5 group text-left cursor-pointer"
           >
-            <div className="w-9 h-9 rounded-xl bg-[#FFF0EE] border border-[#FAD4D2] flex items-center justify-center text-lg shadow-2xs group-hover:scale-105 transition-transform">
-              🌸
-            </div>
+            <PetalLogo size="sm" className="group-hover:scale-105 transition-transform" />
             <div>
               <span className="font-extrabold text-[#2C2220] text-lg tracking-tight block leading-none">
                 Petal
               </span>
-              <span className="text-[11px] font-medium text-[#7C6C68] tracking-wide">
-                Anonymous Sanctuary
+              <span className="text-[11px] font-semibold text-[#8b4650] tracking-wide">
+                A Safe Haven for Her Health
               </span>
             </div>
           </button>
@@ -64,7 +63,7 @@ export function Navbar({
 
       {/* Primary Navigation Tabs */}
       <nav className="max-w-2xl mx-auto px-2 pb-2">
-        <div className="grid grid-cols-4 gap-1 p-1 bg-[#F3ECE2] rounded-2xl border border-[#E9DFD3]">
+        <div className="grid grid-cols-4 gap-1 p-1 bg-[#dc9ea6] rounded-2xl border border-[#d89ba3]">
           {/* Story Tab */}
           <button
             type="button"

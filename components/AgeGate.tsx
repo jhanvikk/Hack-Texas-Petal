@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { ShieldAlert, Heart, ExternalLink, RefreshCw } from "lucide-react";
+import { PetalLogo } from "@/components/PetalLogo";
 
 interface AgeGateProps {
   children: React.ReactNode;
@@ -59,7 +60,7 @@ export function AgeGate({ children }: AgeGateProps) {
 
   if (status === "blocked") {
     return (
-      <div className="min-h-screen bg-[#FAF6F0] flex items-center justify-center p-4 sm:p-6">
+      <div className="min-h-screen bg-[#e6abb2] flex items-center justify-center p-4 sm:p-6">
         <div className="max-w-md w-full bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-[#EFE6DC] text-center space-y-5">
           <div className="w-16 h-16 bg-[#FDE8E7] text-[#D9534F] rounded-full flex items-center justify-center mx-auto shadow-xs">
             <Heart className="w-8 h-8 fill-current" />
@@ -120,46 +121,58 @@ export function AgeGate({ children }: AgeGateProps) {
 
   // First-visit verification modal
   return (
-    <div className="min-h-screen bg-[#FAF6F0] flex items-center justify-center p-4 sm:p-6">
-      <div className="max-w-md w-full bg-white rounded-3xl p-6 sm:p-8 shadow-md border border-[#EFE6DC] text-center space-y-6">
-        <div className="w-16 h-16 bg-[#FFF0EE] text-[#D9534F] rounded-full flex items-center justify-center mx-auto shadow-xs">
-          <span className="text-3xl">🌸</span>
+    <div className="min-h-screen bg-[#e6abb2] flex items-start sm:items-center justify-center p-4 sm:p-6 pt-4 sm:pt-6">
+      {/* Larger rectangle is now yellow (#f4db9a), shifted higher with -mt-2 sm:-mt-6 */}
+      <div className="max-w-md w-full bg-[#f4db9a] rounded-3xl p-5 sm:p-7 shadow-lg border border-[#dfc278] text-center space-y-4 -mt-1 sm:-mt-6">
+        {/* Logo 2x bigger (size="3xl", frameless) */}
+        <div className="flex justify-center pt-1">
+          <PetalLogo size="3xl" frameless />
         </div>
 
-        <div className="space-y-2">
-          <div className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-[#FDE8E7] text-[#C54541]">
-            Anonymous Sanctuary
+        {/* 'A Safe Haven for Her Health', 'Welcome to', 'Petal' shifted UP between logo and bottom text */}
+        <div className="-mt-3 sm:-mt-5 space-y-1.5">
+          <div className="inline-block px-3.5 py-1 rounded-full text-xs font-semibold bg-white/85 text-[#8b4650] border border-[#dfc278] shadow-2xs">
+            A Safe Haven for Her Health
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#2C2220] tracking-tight">
-            Welcome to Petal
-          </h1>
-          <p className="text-sm text-[#6B5C58] leading-relaxed">
-            A gentle, anonymous peer support network for menstrual health. Share your journey, find peers who understand, and chat safely.
-          </p>
+
+          <div className="pt-0.5">
+            <span className="block text-xs sm:text-sm uppercase tracking-[0.25em] font-medium text-[#784e54]">
+              Welcome to
+            </span>
+            <h1 className="text-5xl sm:text-6xl font-black text-[#c66974] tracking-tight leading-none mt-1">
+              Petal
+            </h1>
+          </div>
         </div>
 
-        <div className="bg-[#FAF6F0] p-4 rounded-2xl border border-[#EFE6DC] text-xs text-[#6B5C58] leading-relaxed">
-          <p className="font-semibold text-[#2C2220] mb-1">Age Verification Required</p>
+        {/* Text at the bottom */}
+        <p className="text-xs sm:text-sm text-[#523d13] leading-relaxed pt-1 max-w-sm mx-auto">
+          An anonymous peer support network for women&apos;s health. Share your journey, find peers who understand, and chat safely.
+        </p>
+
+        {/* Age verification text bubble */}
+        <div className="bg-white/90 p-4 rounded-2xl border border-[#dfc278] text-xs text-[#523d13] leading-relaxed shadow-2xs">
+          <p className="font-bold text-[#38280a] mb-1">Age Verification Required</p>
           Petal is created for adults 18 and older to share peer experiences. Please confirm your age to proceed:
         </div>
 
-        <div className="space-y-3 pt-1">
+        <div className="space-y-2.5 pt-0.5">
           <button
             onClick={handleConfirmAge}
-            className="w-full min-h-[52px] bg-[#D9534F] hover:bg-[#C54541] active:scale-[0.98] text-white font-semibold py-3.5 px-6 rounded-2xl shadow-sm text-base transition-all cursor-pointer flex items-center justify-center gap-2"
+            className="w-full min-h-[50px] bg-[#c66974] hover:bg-[#b35762] active:scale-[0.98] text-white font-semibold py-3 px-6 rounded-2xl shadow-sm text-base transition-all cursor-pointer flex items-center justify-center gap-2"
           >
             I am 18 or older
           </button>
 
           <button
             onClick={handleUnderAge}
-            className="w-full min-h-[48px] bg-white hover:bg-[#FAF6F0] active:scale-[0.98] text-[#6B5C58] hover:text-[#2C2220] border border-[#E5DCD2] font-medium py-3 px-6 rounded-2xl text-sm transition-all cursor-pointer"
+            className="w-full min-h-[46px] bg-white hover:bg-[#FFF9EE] active:scale-[0.98] text-[#6B5C58] hover:text-[#2C2220] border border-[#dfc278] font-medium py-2.5 px-6 rounded-2xl text-sm transition-all cursor-pointer"
           >
             I am under 18
           </button>
         </div>
 
-        <p className="text-[11px] text-[#998884] leading-normal">
+        <p className="text-[11px] text-[#78591d] leading-normal">
           Your choice is saved safely in this browser on your device. We do not store any identifying cookies or personal trackers.
         </p>
       </div>
