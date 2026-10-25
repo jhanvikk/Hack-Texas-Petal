@@ -27,6 +27,8 @@ export interface ChatMessage {
 interface ChatScreenProps {
   peerAlias: string;
   userAlias: string;
+  initialQuestion?: string;
+  clinicInquiry?: boolean;
   onBlockUser: (peerAlias: string) => void;
   onReportUser: (peerAlias: string, reason: string) => void;
   onBackToMatches: () => void;
@@ -35,6 +37,8 @@ interface ChatScreenProps {
 export function ChatScreen({
   peerAlias = "Gentle Fern",
   userAlias = "Quiet Willow",
+  initialQuestion = "",
+  clinicInquiry = false,
   onBlockUser,
   onReportUser,
   onBackToMatches,
@@ -63,7 +67,7 @@ export function ChatScreen({
     },
   ]);
 
-  const [inputText, setInputText] = useState("");
+  const [inputText, setInputText] = useState(initialQuestion);
   const [moderationWarning, setModerationWarning] = useState<ModerationResult | null>(null);
   const [showBlockModal, setShowBlockModal] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
@@ -183,6 +187,12 @@ export function ChatScreen({
       <div className="px-4 py-2 bg-[#FFF7ED] border-b border-[#FAD8C3]">
         <DisclaimerBanner compact />
       </div>
+
+      {clinicInquiry && (
+        <div className="border-b border-[#FAD4D2] bg-[#FFF5F5] px-4 py-2.5 text-xs leading-relaxed text-[#7F1D1D]">
+          Demo chat: replies are simulated, and this peer’s clinic visit history is not verified.
+        </div>
+      )}
 
       {/* Message Stream */}
       <div className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-[#FAF6F0]/40 custom-scrollbar">
