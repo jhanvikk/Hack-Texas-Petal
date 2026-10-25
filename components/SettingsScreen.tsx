@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { ShieldCheck, Trash2, AlertTriangle, Lock, EyeOff, RefreshCw, CheckCircle2 } from "lucide-react";
+import { ShieldCheck, Trash2, AlertTriangle, Lock, EyeOff, RefreshCw, CheckCircle2, LogOut } from "lucide-react";
+import { supabaseBrowser } from "@/lib/supabaseClient";
 
 interface SettingsScreenProps {
   onDeleteAllData: () => void;
@@ -22,15 +23,36 @@ export function SettingsScreen({
 }: SettingsScreenProps) {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [confirmedTyped, setConfirmedTyped] = useState("");
-  const [deletedNotice, setDeletedNotice] = useState(false);
+  const [deletedNotice] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
 
-  const handleDeleteConfirmed = () => {
-    setShowConfirmModal(false);
-    onDeleteAllData();
-    setDeletedNotice(true);
-    setTimeout(() => {
-      setDeletedNotice(false);
-    }, 4000);
+  const handleDeleteConfirmed = async () => {
+    setDeleting(true);
+    setDeleteError("");
+    try {
+      const { data } = await supabaseBrowser.auth.getSession();
+      const token = data.session?.access_token;
+      if (!token) throw new Error("You're not logged in.");
+
+      const res = await fetch("/api/delete-account", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error("Couldn't delete your account. Please try again.");
+
+      onDeleteAllData(); // clears story, matches, etc. in page.tsx
+      await supabaseBrowser.auth.signOut();
+      window.location.reload(); // back to the login screen
+    } catch (err) {
+      setDeleteError(err instanceof Error ? err.message : "Something went wrong.");
+      setDeleting(false);
+    }
+  };
+
+  const handleLogOut = async () => {
+    await supabaseBrowser.auth.signOut();
+    window.location.reload(); // clears the story and matches held in page.tsx state
   };
 
   return (
@@ -121,6 +143,22 @@ export function SettingsScreen({
         </div>
       </div>
 
+      {/* Log out */}
+      <div className="bg-white rounded-3xl p-5 sm:p-7 border border-[#EFE6DC] shadow-xs flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <h2 className="text-base sm:text-lg font-bold text-[#2C2220]">Log out</h2>
+          <p className="text-xs text-[#6B5C58]">Sign out of Petal on this device.</p>
+        </div>
+        <button
+          type="button"
+          onClick={handleLogOut}
+          className="min-h-[48px] px-5 py-3 bg-[#FAF6F0] hover:bg-[#F3ECE2] border border-[#E5DCD2] text-[#2C2220] font-semibold rounded-2xl text-xs sm:text-sm transition-colors cursor-pointer flex items-center gap-2"
+        >
+          <LogOut className="w-4 h-4" />
+          <span>Log out</span>
+        </button>
+      </div>
+
       {/* Delete My Data Action Card */}
       <div className="bg-white rounded-3xl p-5 sm:p-7 border border-[#FCA5A5] shadow-xs space-y-4">
         <div className="flex items-center gap-3">
@@ -198,20 +236,27 @@ export function SettingsScreen({
               />
             </div>
 
+            {deleteError && (
+              <p role="alert" className="text-xs text-[#991B1B] bg-[#FEE2E2] rounded-xl px-3 py-2">
+                {deleteError}
+              </p>
+            )}
+
             <div className="pt-2 flex flex-col sm:flex-row gap-2">
               <button
                 type="button"
-                disabled={confirmedTyped.trim().toUpperCase() !== "DELETE"}
+                disabled={confirmedTyped.trim().toUpperCase() !== "DELETE" || deleting}
                 onClick={handleDeleteConfirmed}
                 className="w-full py-3 bg-[#DC2626] hover:bg-[#B91C1C] disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold rounded-xl text-sm transition-colors cursor-pointer"
               >
-                Yes, Permanently Delete All Data
+                {deleting ? "Deleting..." : "Yes, Permanently Delete All Data"}
               </button>
               <button
                 type="button"
                 onClick={() => {
                   setShowConfirmModal(false);
                   setConfirmedTyped("");
+                  setDeleteError("");
                 }}
                 className="w-full sm:w-auto py-3 px-4 text-xs font-medium text-[#6B5C58] hover:text-[#2C2220] text-center cursor-pointer"
               >

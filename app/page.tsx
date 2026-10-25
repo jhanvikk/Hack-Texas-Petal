@@ -13,6 +13,8 @@ import { EmergencyModal } from "@/components/EmergencyModal";
 import { SAMPLE_STORIES, SampleStory, MatchedStory } from "@/lib/sampleData";
 import { extractSearchSymptoms } from "@/lib/symptomSearch";
 import { ClinicProfile, ClinicResult, ClinicSymptom, deriveClinicProfile, scoreClinics } from "@/lib/clinics";
+import { AuthGate } from "@/components/AuthGate";
+
 
 export default function PetalApp() {
   const [activeTab, setActiveTab] = useState<NavTab>("story");
@@ -264,6 +266,7 @@ export default function PetalApp() {
 
   return (
     <AgeGate>
+      <AuthGate>
       <div className="min-h-screen bg-[#FAF6F0] flex flex-col selection:bg-[#FDE8E7] selection:text-[#9F1239]">
         {/* Navigation Bar */}
         <Navbar
@@ -322,6 +325,7 @@ export default function PetalApp() {
                 onBackToMatches={() => setActiveTab("matches")}
               />
             )}
+  
 
             {activeTab === "care" && (
               <DoctorsScreen
@@ -362,6 +366,7 @@ export default function PetalApp() {
           onClose={() => setIsEmergencyModalOpen(false)}
         />
       </div>
+       </AuthGate>
     </AgeGate>
   );
 }
