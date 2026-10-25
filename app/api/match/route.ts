@@ -4,10 +4,12 @@ import { SAMPLE_STORIES } from "@/lib/sampleData";
 import { stripPII } from "@/lib/safety";
 import { toEmbedText, finalScore, whyText } from "@/lib/match";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+function getSupabaseClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) return null;
+  return createClient(url, key);
+}
 
 export async function POST(req: Request) {
   const { cleanedStory, condition, duration, ageRange } = await req.json();
@@ -17,6 +19,24 @@ export async function POST(req: Request) {
 
   // re-strip on the server; never trust the client to have done it
   const text = toEmbedText({ condition, duration, text: stripPII(cleanedStory) });
+
+  const supabase = getSupabaseClient();
+  if (!supabase) {
+    const matches = SAMPLE_STORIES.map((peer) => {
+      let sim = 0.78;
+      if (peer.condition.toLowerCase().includes((condition || "").toLowerCase())) sim += 0.12;
+      if (peer.duration.toLowerCase() === (duration || "").toLowerCase()) sim += 0.05;
+      return {
+        id: peer.id,
+        score: Math.round(finalScore(sim, ageRange, peer.ageRange) * 100),
+        why: whyText({ condition, ageRange }, peer),
+      };
+    })
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5);
+
+    return NextResponse.json({ matches });
+  }
 
   const { data: e, error: eErr } = await supabase.functions.invoke("embed", { body: { text } });
   if (eErr || !e?.embedding) {
