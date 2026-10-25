@@ -5,18 +5,10 @@ import { Sparkles, Shield, AlertTriangle, ArrowRight, CheckCircle2, RotateCcw } 
 import { checkCrisisAndEmergency, stripPII, CrisisCheckResult } from "@/lib/safety";
 import { CrisisCard } from "@/components/CrisisCard";
 import { DisclaimerBanner } from "@/components/DisclaimerBanner";
+import { STORY_CONDITIONS } from "@/lib/symptomSearch";
 
 const AGE_RANGES = ["18-24", "25-34", "35-44", "45+"];
 const DURATIONS = ["Under 6 months", "6 mos - 2 yrs", "2 - 5 years", "5+ years"];
-const CONDITIONS = [
-  "Endometriosis",
-  "PCOS",
-  "PMDD",
-  "Heavy Bleeding",
-  "Severe Cramps",
-  "Perimenopause",
-  "Exploring / Unsure",
-];
 const SUPPORT_GOALS = [
   "Someone who gets it",
   "Daily coping tips",
@@ -48,7 +40,7 @@ export function StoryScreen({ onStorySubmitted, savedStory }: StoryScreenProps) 
   const [storyText, setStoryText] = useState(savedStory?.storyText || "");
   const [ageRange, setAgeRange] = useState(savedStory?.ageRange || "25-34");
   const [duration, setDuration] = useState(savedStory?.duration || "2 - 5 years");
-  const [condition, setCondition] = useState(savedStory?.condition || "Endometriosis");
+  const [condition, setCondition] = useState(savedStory?.condition || "Exploring / Unsure");
   const [supportGoal, setSupportGoal] = useState(savedStory?.supportGoal || "Daily coping tips");
   
   const [crisisAlert, setCrisisAlert] = useState<CrisisCheckResult>({ triggered: false });
@@ -266,7 +258,7 @@ export function StoryScreen({ onStorySubmitted, savedStory }: StoryScreenProps) 
               Primary Experience / Condition
             </span>
             <div className="flex flex-wrap gap-2">
-              {CONDITIONS.map((item) => (
+              {STORY_CONDITIONS.map((item) => (
                 <button
                   key={item}
                   type="button"

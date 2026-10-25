@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import { Heart, Users, MessageCircle, Settings, ShieldCheck, LifeBuoy } from "lucide-react";
+import { Heart, Users, MessageCircle, Settings, ShieldCheck, LifeBuoy, Stethoscope } from "lucide-react";
 
-export type NavTab = "story" | "matches" | "chat" | "settings";
+export type NavTab = "story" | "matches" | "chat" | "care" | "settings";
 
 interface NavbarProps {
   activeTab: NavTab;
@@ -64,12 +64,12 @@ export function Navbar({
 
       {/* Primary Navigation Tabs */}
       <nav className="max-w-2xl mx-auto px-2 pb-2">
-        <div className="grid grid-cols-4 gap-1 p-1 bg-[#F3ECE2] rounded-2xl border border-[#E9DFD3]">
+        <div className="grid grid-cols-5 gap-1 p-1 bg-[#F3ECE2] rounded-2xl border border-[#E9DFD3]">
           {/* Story Tab */}
           <button
             type="button"
             onClick={() => setActiveTab("story")}
-            className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+            className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-2 sm:py-2.5 px-1 rounded-xl text-[10px] sm:text-sm font-semibold transition-all cursor-pointer ${
               activeTab === "story"
                 ? "bg-white text-[#D9534F] shadow-xs"
                 : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"
@@ -83,7 +83,7 @@ export function Navbar({
           <button
             type="button"
             onClick={() => setActiveTab("matches")}
-            className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer relative ${
+            className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-2 sm:py-2.5 px-1 rounded-xl text-[10px] sm:text-sm font-semibold transition-all cursor-pointer relative ${
               activeTab === "matches"
                 ? "bg-white text-[#D9534F] shadow-xs"
                 : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"
@@ -92,7 +92,7 @@ export function Navbar({
             <Users className="w-4 h-4" />
             <span>Matches</span>
             {matchesCount > 0 && (
-              <span className="ml-0.5 px-1.5 py-0.2 bg-[#FDE8E7] text-[#C54541] rounded-full text-[10px] font-bold">
+              <span className="ml-0.5 hidden sm:inline-flex px-1.5 py-0.2 bg-[#FDE8E7] text-[#C54541] rounded-full text-[10px] font-bold">
                 {matchesCount}
               </span>
             )}
@@ -102,7 +102,7 @@ export function Navbar({
           <button
             type="button"
             onClick={() => setActiveTab("chat")}
-            className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer relative ${
+            className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-2 sm:py-2.5 px-1 rounded-xl text-[10px] sm:text-sm font-semibold transition-all cursor-pointer relative ${
               activeTab === "chat"
                 ? "bg-white text-[#D9534F] shadow-xs"
                 : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"
@@ -115,11 +115,25 @@ export function Navbar({
             )}
           </button>
 
+          {/* Care Tab */}
+          <button
+            type="button"
+            onClick={() => setActiveTab("care")}
+            className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-2 sm:py-2.5 px-1 rounded-xl text-[10px] sm:text-sm font-semibold transition-all cursor-pointer ${
+              activeTab === "care"
+                ? "bg-white text-[#D9534F] shadow-xs"
+                : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"
+            }`}
+          >
+            <Stethoscope className="w-4 h-4" />
+            <span>Care</span>
+          </button>
+
           {/* Settings Tab */}
           <button
             type="button"
             onClick={() => setActiveTab("settings")}
-            className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+            className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-2 sm:py-2.5 px-1 rounded-xl text-[10px] sm:text-sm font-semibold transition-all cursor-pointer ${
               activeTab === "settings"
                 ? "bg-white text-[#D9534F] shadow-xs"
                 : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"

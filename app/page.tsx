@@ -7,8 +7,10 @@ import { StoryScreen } from "@/components/StoryScreen";
 import { MatchesScreen, MatchConnectionState } from "@/components/MatchesScreen";
 import { ChatScreen } from "@/components/ChatScreen";
 import { SettingsScreen } from "@/components/SettingsScreen";
+import { DoctorsScreen } from "@/components/DoctorsScreen";
 import { EmergencyModal } from "@/components/EmergencyModal";
 import { SAMPLE_STORIES, SampleStory, MatchedStory } from "@/lib/sampleData";
+import { extractSearchSymptoms } from "@/lib/symptomSearch";
 
 export default function PetalApp() {
   const [activeTab, setActiveTab] = useState<NavTab>("story");
@@ -26,7 +28,9 @@ export default function PetalApp() {
     duration: string;
     condition: string;
     supportGoal: string;
+    searchSymptoms: string[];
   } | null>(null);
+  const [careLocation, setCareLocation] = useState("");
 
   const [matchResults, setMatchResults] = useState<{ id: string; score: number; why: string }[]>([]);
   const [matchesLoading, setMatchesLoading] = useState(false);
@@ -39,6 +43,10 @@ export default function PetalApp() {
 
   // Active chat peer
   const [activeChatPeer, setActiveChatPeer] = useState<SampleStory>(SAMPLE_STORIES[0]);
+  const [clinicQuestion, setClinicQuestion] = useState<{ name: string; address?: string } | null>(null);
+  const [chatInitialQuestion, setChatInitialQuestion] = useState("");
+  const [isClinicInquiry, setIsClinicInquiry] = useState(false);
+  const [sharedClinicExperiences, setSharedClinicExperiences] = useState<Record<string, { rating: number; experience: string }>>({});
 
   // Handle Story Submission
   const handleStorySubmitted = async (storyData: {
@@ -50,7 +58,10 @@ export default function PetalApp() {
     supportGoal: string;
     tags: string[];
   }) => {
-    setSavedStory(storyData);
+    setSavedStory({
+      ...storyData,
+      searchSymptoms: extractSearchSymptoms(storyData.cleanedStory),
+    });
     setActiveTab("matches");
     setMatchesLoading(true);
     try {
@@ -88,7 +99,36 @@ export default function PetalApp() {
 
   const handleOpenChatWithMatch = (match: MatchedStory) => {
     setActiveChatPeer(match);
+    setChatInitialQuestion(
+      clinicQuestion
+        ? `Have you visited ${clinicQuestion.name}? I'm looking for personal experiences with this clinic, if you feel comfortable sharing.`
+        : ""
+    );
     setActiveTab("chat");
+  };
+
+  const handleAskPeerAboutClinic = (name: string, address?: string) => {
+    setClinicQuestion({ name, address });
+    setIsClinicInquiry(true);
+    setChatInitialQuestion(
+      `Have you visited ${name}? I'm looking for personal experiences with this clinic, if you feel comfortable sharing.`
+    );
+
+  };
+
+  const handleBackToClinics = () => {
+    setClinicQuestion(null);
+    setIsClinicInquiry(false);
+    setChatInitialQuestion("");
+  };
+
+  const handleTabChange = (tab: NavTab) => {
+    if (tab !== "care") handleBackToClinics();
+    setActiveTab(tab);
+  };
+
+  const handleShareClinicExperience = (name: string, submission: { rating: number; experience: string }) => {
+    setSharedClinicExperiences((previous) => ({ ...previous, [name]: submission }));
   };
 
   // Block & Report actions
@@ -108,6 +148,8 @@ export default function PetalApp() {
     setMatchResults([]);
     setConnectionStates({});
     setBlockedAliases([]);
+    setCareLocation("");
+    setSharedClinicExperiences({});
     setAnonymousId(`anon_usr_${Math.random().toString(36).substring(2, 8)}`);
     setActiveTab("story");
   };
@@ -135,7 +177,7 @@ export default function PetalApp() {
       <div className="min-h-screen bg-[#FAF6F0] flex flex-col selection:bg-[#FDE8E7] selection:text-[#9F1239]">
         <Navbar
           activeTab={activeTab}
-          setActiveTab={setActiveTab}
+          setActiveTab={handleTabChange}
           matchesCount={availableMatches.slice(0, 3).length}
           unreadChatCount={Object.values(connectionStates).filter((s) => s === "connected").length}
           onOpenEmergencyModal={() => setIsEmergencyModalOpen(true)}
@@ -165,9 +207,32 @@ export default function PetalApp() {
             <ChatScreen
               peerAlias={activeChatPeer?.alias || "Gentle Fern"}
               userAlias={userAlias}
+              initialQuestion={chatInitialQuestion}
+              clinicInquiry={isClinicInquiry}
               onBlockUser={handleBlockUser}
               onReportUser={handleReportUser}
               onBackToMatches={() => setActiveTab("matches")}
+            />
+          )}
+
+          {activeTab === "care" && (
+            <DoctorsScreen
+              condition={savedStory?.condition ?? ""}
+              symptoms={savedStory?.searchSymptoms ?? []}
+              hasStory={!!savedStory}
+              initialLocation={careLocation}
+              onLocationChange={setCareLocation}
+              onAskPeerAboutClinic={handleAskPeerAboutClinic}
+              onBackToClinics={handleBackToClinics}
+              matches={availableMatches}
+              connectionStates={connectionStates}
+              clinicQuestion={clinicQuestion}
+              sharedClinicExperience={clinicQuestion ? sharedClinicExperiences[clinicQuestion.name] ?? null : null}
+              onShareClinicExperience={(submission) => clinicQuestion && handleShareClinicExperience(clinicQuestion.name, submission)}
+              onConnectRequest={handleConnectRequest}
+              onSimulatePeerAccept={handleSimulatePeerAccept}
+              onDeclineMatch={handleDeclineMatch}
+              onOpenChatWithMatch={handleOpenChatWithMatch}
             />
           )}
 

@@ -8,6 +8,7 @@ export interface SampleStory {
   summary: string;
   fullStoryCleaned: string;
   tags: string[];
+  visitedClinicNames?: string[];
 }
 
 export const SAMPLE_STORIES: SampleStory[] = [

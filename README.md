@@ -2,6 +2,19 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Enable Nearby Doctor Search
+
+1. Get an API key from your [SerpAPI account](https://serpapi.com/manage-api-key).
+2. Open `.env.local` in the project root and set `SERPAPI_API_KEY` to your key:
+
+	```env
+	SERPAPI_API_KEY=your-serpapi-api-key
+	```
+
+3. Restart the development server with `npm run dev` and open the **Care** tab.
+
+Keep this key server-side: do not rename it with a `NEXT_PUBLIC_` prefix or commit it. Searches send the entered location to SerpAPI and Google to return public listings.
+
 First, run the development server:
 
 ```bash
@@ -13,8 +26,8 @@ pnpm dev
 # or
 bun dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+http://localhost:3000
+Open [](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
