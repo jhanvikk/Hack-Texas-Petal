@@ -32,10 +32,10 @@ export function Navbar({
           >
             <PetalLogo size="sm" className="group-hover:scale-105 transition-transform" />
             <div>
-              <span className="font-extrabold text-[#2C2220] text-lg tracking-tight block leading-none">
+              <span className="font-extrabold text-[#2C2220] text-lg tracking-tight block leading-none font-poppins">
                 Petal
               </span>
-              <span className="text-[11px] font-semibold text-[#8b4650] tracking-wide">
+              <span className="text-[11px] font-semibold text-[#8b4650] tracking-wide block mt-0.5">
                 A Safe Haven for Her Health
               </span>
             </div>
@@ -52,10 +52,10 @@ export function Navbar({
           <button
             type="button"
             onClick={onOpenEmergencyModal}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FFF0EE] border border-[#FAD4D2] hover:bg-[#FDE8E7] text-[#C54541] rounded-full text-xs font-semibold shadow-2xs transition-all active:scale-95 cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-[#f4db9a] border border-[#dfc278] hover:bg-[#ebd087] text-[#4a350c] rounded-full text-xs font-bold shadow-2xs transition-all active:scale-95 cursor-pointer"
             title="Crisis and Urgent Support Resources"
           >
-            <LifeBuoy className="w-3.5 h-3.5" />
+            <LifeBuoy className="w-3.5 h-3.5 text-[#6c4e12]" />
             <span>988 Help</span>
           </button>
         </div>
