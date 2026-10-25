@@ -12,6 +12,7 @@ interface SerpApiResult {
   displayed_link?: unknown;
   address?: unknown;
   phone?: unknown;
+  phone_number?: unknown;
   rating?: unknown;
   reviews?: unknown;
   snippet?: unknown;
@@ -63,7 +64,7 @@ function normalizeResult(result: SerpApiResult, location: string): Provider | nu
     link,
     source: asText(result.source) ?? asText(result.displayed_link),
     address: asText(result.address),
-    phone: asText(result.phone),
+    phone: asText(result.phone) ?? asText(result.phone_number),
     rating: asNumber(result.rating),
     reviews: asNumber(result.reviews),
     snippet: asText(result.snippet),
@@ -116,9 +117,11 @@ export async function POST(request: Request) {
     .join(" ");
 
   const params = new URLSearchParams({
-    engine: "google",
+    engine: "google_maps",
+    type: "search",
     q: query,
     location,
+    z: "14",
     google_domain: "google.com",
     hl: "en",
     gl: "us",
