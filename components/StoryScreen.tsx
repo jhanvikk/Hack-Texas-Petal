@@ -18,17 +18,13 @@ const SUPPORT_GOALS = [
 
 interface StoryScreenProps {
   onStorySubmitted: (storyData: {
-    storyText: string;
     cleanedStory: string;
     ageRange: string;
     duration: string;
     condition: string;
     supportGoal: string;
-    tags: string[];
   }) => void;
   savedStory?: {
-    storyText: string;
-    cleanedStory: string;
     ageRange: string;
     duration: string;
     condition: string;
@@ -37,7 +33,7 @@ interface StoryScreenProps {
 }
 
 export function StoryScreen({ onStorySubmitted, savedStory }: StoryScreenProps) {
-  const [storyText, setStoryText] = useState(savedStory?.storyText || "");
+  const [storyText, setStoryText] = useState("");
   const [ageRange, setAgeRange] = useState(savedStory?.ageRange || "25-34");
   const [duration, setDuration] = useState(savedStory?.duration || "2 - 5 years");
   const [condition, setCondition] = useState(savedStory?.condition || "Exploring / Unsure");
@@ -89,21 +85,16 @@ export function StoryScreen({ onStorySubmitted, savedStory }: StoryScreenProps) 
       return;
     }
 
-    // 2. Strip PII before storage/AI
+    // 2. Scrub PII before local keyword extraction
     const cleaned = stripPII(storyText);
-
-    // 3. Extract basic tags
-    const tags = [condition, ageRange, duration, supportGoal].filter(Boolean);
 
     setTimeout(() => {
       onStorySubmitted({
-        storyText,
         cleanedStory: cleaned,
         ageRange,
         duration,
         condition,
         supportGoal,
-        tags,
       });
       setIsSubmitting(false);
     }, 400);
@@ -255,8 +246,9 @@ export function StoryScreen({ onStorySubmitted, savedStory }: StoryScreenProps) 
           {/* Diagnosed or Suspected Condition */}
           <div className="space-y-2">
             <span className="text-xs font-bold uppercase tracking-wider text-[#7C6C68]">
-              Primary Experience / Condition
+              Optional search hint
             </span>
+            <p className="text-xs text-[#7C6C68]">Your words about symptoms guide clinic search. This hint only adds context.</p>
             <div className="flex flex-wrap gap-2">
               {STORY_CONDITIONS.map((item) => (
                 <button

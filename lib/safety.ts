@@ -65,7 +65,7 @@ export function checkCrisisAndEmergency(text: string): CrisisCheckResult {
   return { triggered: false };
 }
 
-// PII Scrubber: strips emails, phone numbers, social handles, URLs
+// PII Scrubber: strips email, phone, social handles, URLs, and explicit name introductions
 export function stripPII(text: string): string {
   let cleaned = text;
 
@@ -80,6 +80,8 @@ export function stripPII(text: string): string {
 
   // Social handles (@username)
   cleaned = cleaned.replace(/(?:^|\s)@([A-Za-z0-9_]{3,20})/g, " [Handle Removed]");
+
+  cleaned = cleaned.replace(/\b(?:[Mm]y name (?:is|'s)|[Ii] am|[Ii]'m|[Cc]all me|[Cc]ontact|[Dd]octor(?: is)?|[Dd]r\.?)\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)?/g, "[Name Removed]");
 
   return cleaned;
 }

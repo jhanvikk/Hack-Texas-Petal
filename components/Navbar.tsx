@@ -4,7 +4,7 @@ import React from "react";
 import { Heart, Users, MessageCircle, Settings, ShieldCheck, LifeBuoy, Stethoscope } from "lucide-react";
 import { PetalLogo } from "@/components/PetalLogo";
 
-export type NavTab = "story" | "matches" | "chat" | "care" | "settings";
+export type NavTab = "story" | "matches" | "chat" | "care" | "clinics" | "settings";
 
 interface NavbarProps {
   activeTab: NavTab;
@@ -23,19 +23,23 @@ export function Navbar({
 }: NavbarProps) {
   return (
     <header className="sticky top-0 z-40 bg-[#e6abb2]/95 backdrop-blur-md border-b border-[#d89ba3]">
-      <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div className="max-w-2xl mx-auto px-4 py-[3px] flex items-center justify-between">
         {/* Brand */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2.5 ml-3">
           <button
             onClick={() => setActiveTab("story")}
-            className="flex items-center gap-2.5 group text-left cursor-pointer"
+            className="flex items-center gap-0 group text-left cursor-pointer"
           >
-            <PetalLogo size="sm" className="group-hover:scale-105 transition-transform" />
-            <div>
-              <span className="font-extrabold text-[#2C2220] text-lg tracking-tight block leading-none">
+            <PetalLogo
+              size="lg"
+              frameless
+              className="-translate-x-3.5 scale-[1.71] group-hover:scale-[1.76] transition-transform"
+            />
+            <div className="-ml-4 scale-[0.86] origin-left">
+              <span className="font-extrabold text-[#2C2220] text-xl tracking-tight block leading-none">
                 Petal
               </span>
-              <span className="text-[11px] font-semibold text-[#8b4650] tracking-wide">
+              <span className="text-xs font-semibold text-[#8b4650] tracking-wide">
                 A Safe Haven for Her Health
               </span>
             </div>
@@ -62,13 +66,13 @@ export function Navbar({
       </div>
 
       {/* Primary Navigation Tabs */}
-      <nav className="max-w-2xl mx-auto px-2 pb-2">
-        <div className="grid grid-cols-5 gap-1 p-1 bg-[#dc9ea6] rounded-2xl border border-[#d89ba3]">
+      <nav className="max-w-2xl mx-auto px-2 pb-[3px]">
+        <div className="grid grid-cols-6 gap-1 p-[3px] bg-[#dc9ea6] rounded-2xl border border-[#d89ba3]">
           {/* Story Tab */}
           <button
             type="button"
             onClick={() => setActiveTab("story")}
-            className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-2 sm:py-2.5 px-1 rounded-xl text-[10px] sm:text-sm font-semibold transition-all cursor-pointer ${activeTab === "story"
+            className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-1.5 sm:py-[7.5px] px-1 rounded-xl text-[10px] sm:text-sm font-semibold transition-all cursor-pointer ${activeTab === "story"
                 ? "bg-white text-[#D9534F] shadow-xs"
                 : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"
               }`}
@@ -81,7 +85,7 @@ export function Navbar({
           <button
             type="button"
             onClick={() => setActiveTab("matches")}
-            className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-2 sm:py-2.5 px-1 rounded-xl text-[10px] sm:text-sm font-semibold transition-all cursor-pointer relative ${activeTab === "matches"
+            className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-1.5 sm:py-[7.5px] px-1 rounded-xl text-[10px] sm:text-sm font-semibold transition-all cursor-pointer relative ${activeTab === "matches"
                 ? "bg-white text-[#D9534F] shadow-xs"
                 : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"
               }`}
@@ -99,7 +103,7 @@ export function Navbar({
           <button
             type="button"
             onClick={() => setActiveTab("chat")}
-            className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-2 sm:py-2.5 px-1 rounded-xl text-[10px] sm:text-sm font-semibold transition-all cursor-pointer relative ${activeTab === "chat"
+            className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-1.5 sm:py-[7.5px] px-1 rounded-xl text-[10px] sm:text-sm font-semibold transition-all cursor-pointer relative ${activeTab === "chat"
                 ? "bg-white text-[#D9534F] shadow-xs"
                 : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"
               }`}
@@ -115,7 +119,7 @@ export function Navbar({
           <button
             type="button"
             onClick={() => setActiveTab("care")}
-            className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-2 sm:py-2.5 px-1 rounded-xl text-[10px] sm:text-sm font-semibold transition-all cursor-pointer ${activeTab === "care"
+            className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-1.5 sm:py-[7.5px] px-1 rounded-xl text-[10px] sm:text-sm font-semibold transition-all cursor-pointer ${activeTab === "care"
                 ? "bg-white text-[#D9534F] shadow-xs"
                 : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"
               }`}
@@ -124,11 +128,25 @@ export function Navbar({
             <span>Care</span>
           </button>
 
+          {/* Clinics Tab */}
+          <button
+            type="button"
+            onClick={() => setActiveTab("clinics")}
+            className={`flex items-center justify-center gap-1 py-[7.5px] px-1 rounded-xl text-[11px] sm:text-sm font-semibold transition-all cursor-pointer ${
+              activeTab === "clinics"
+                ? "bg-white text-[#D9534F] shadow-xs"
+                : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"
+            }`}
+          >
+            <Stethoscope className="w-4 h-4 shrink-0" />
+            <span>Clinics</span>
+          </button>
+
           {/* Settings Tab */}
           <button
             type="button"
             onClick={() => setActiveTab("settings")}
-            className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-2 sm:py-2.5 px-1 rounded-xl text-[10px] sm:text-sm font-semibold transition-all cursor-pointer ${activeTab === "settings"
+            className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-1.5 sm:py-[7.5px] px-1 rounded-xl text-[10px] sm:text-sm font-semibold transition-all cursor-pointer ${activeTab === "settings"
                 ? "bg-white text-[#D9534F] shadow-xs"
                 : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"
               }`}
