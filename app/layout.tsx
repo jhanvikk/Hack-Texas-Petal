@@ -1,16 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
-<<<<<<< Updated upstream
-=======
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
-  variable: "--font-poppins-local",
-  display: "swap",
-});
-
->>>>>>> Stashed changes
 export const metadata: Metadata = {
   title: "Petal | A Safe Haven for Her Health",
   description: "A warm, safe, anonymous peer support network for women's health. Share your journey, find peers who understand, and chat safely.",
