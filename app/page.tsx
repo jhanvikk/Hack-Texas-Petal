@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { AgeGate } from "@/components/AgeGate";
 import { Navbar, NavTab } from "@/components/Navbar";
 import { StoryScreen } from "@/components/StoryScreen";
@@ -8,13 +8,28 @@ import { MatchesScreen, MatchConnectionState } from "@/components/MatchesScreen"
 import { ChatScreen } from "@/components/ChatScreen";
 import { SettingsScreen } from "@/components/SettingsScreen";
 import { DoctorsScreen } from "@/components/DoctorsScreen";
+import { ClinicsScreen } from "@/components/ClinicsScreen";
 import { EmergencyModal } from "@/components/EmergencyModal";
 import { SAMPLE_STORIES, SampleStory, MatchedStory } from "@/lib/sampleData";
 import { extractSearchSymptoms } from "@/lib/symptomSearch";
+import { ClinicProfile, ClinicResult, ClinicSymptom, deriveClinicProfile, scoreClinics } from "@/lib/clinics";
 
 export default function PetalApp() {
   const [activeTab, setActiveTab] = useState<NavTab>("story");
   const [isEmergencyModalOpen, setIsEmergencyModalOpen] = useState(false);
+  const [zipCode, setZipCode] = useState(() =>
+    typeof window === "undefined" ? "" : window.localStorage.getItem("petal_clinic_zip") || "",
+  );
+  const [clinicProfile, setClinicProfile] = useState<ClinicProfile | null>(null);
+  const [clinicSearch, setClinicSearch] = useState<{
+    key: string;
+    clinics: ClinicResult[];
+    loading: boolean;
+    error: string | null;
+    loaded: boolean;
+  }>({ key: "", clinics: [], loading: false, error: null, loaded: false });
+  const clinicRequestId = useRef(0);
+  const [clinicMatchSymptoms, setClinicMatchSymptoms] = useState<ClinicSymptom[]>([]);
 
   // User Anonymous State
   const [userAlias] = useState("Quiet Willow");
@@ -22,8 +37,6 @@ export default function PetalApp() {
 
   // Story & Matches State
   const [savedStory, setSavedStory] = useState<{
-    storyText: string;
-    cleanedStory: string;
     ageRange: string;
     duration: string;
     condition: string;
@@ -48,15 +61,73 @@ export default function PetalApp() {
   const [isClinicInquiry, setIsClinicInquiry] = useState(false);
   const [sharedClinicExperiences, setSharedClinicExperiences] = useState<Record<string, { rating: number; experience: string }>>({});
 
+  const runClinicSearch = async (profile: ClinicProfile, retry = false) => {
+    if (!profile.zip) return;
+    const key = JSON.stringify({ queries: profile.searchQueries, zip: profile.zip });
+    if (!retry && clinicSearch.key === key) {
+      if (clinicSearch.loading) return;
+      if (!clinicSearch.error && clinicSearch.loaded) {
+        setClinicSearch((previous) => ({ ...previous, clinics: scoreClinics(previous.clinics, profile) }));
+        return;
+      }
+    }
+    const requestId = ++clinicRequestId.current;
+
+    setClinicSearch((previous) => ({
+      key,
+      clinics: previous.key === key ? previous.clinics : [],
+      loading: true,
+      error: null,
+      loaded: false,
+    }));
+    try {
+      const params = new URLSearchParams();
+      profile.searchQueries.forEach((query) => params.append("specialty", query));
+      params.set("zip", profile.zip);
+      const response = await fetch(`/api/clinicians?${params.toString()}`);
+      const data = await response.json() as { clinics?: ClinicResult[]; error?: string };
+      if (!response.ok) throw new Error(data.error || "Clinic results could not be loaded.");
+      if (requestId !== clinicRequestId.current) return;
+      setClinicSearch({
+        key,
+        clinics: scoreClinics(data.clinics || [], profile),
+        loading: false,
+        error: null,
+        loaded: true,
+      });
+    } catch (searchError) {
+      if (requestId !== clinicRequestId.current) return;
+      setClinicSearch({
+        key,
+        clinics: [],
+        loading: false,
+        error: searchError instanceof Error ? searchError.message : "Clinic results could not be loaded.",
+        loaded: false,
+      });
+    }
+  };
+
+  const handleZipChange = (value: string) => {
+    setZipCode(value);
+    localStorage.setItem("petal_clinic_zip", value);
+    if (!clinicProfile) return;
+    const nextProfile = { ...clinicProfile, zip: value };
+    setClinicProfile(nextProfile);
+    if (/^\d{5}(?:-\d{4})?$/.test(value)) {
+      void runClinicSearch(nextProfile);
+    } else {
+      clinicRequestId.current += 1;
+      setClinicSearch((previous) => ({ ...previous, clinics: [], loading: false, error: null, loaded: false }));
+    }
+  };
+
   // Handle Story Submission
   const handleStorySubmitted = async (storyData: {
-    storyText: string;
     cleanedStory: string;
     ageRange: string;
     duration: string;
     condition: string;
     supportGoal: string;
-    tags: string[];
   }) => {
     setSavedStory({
       ...storyData,
@@ -64,6 +135,15 @@ export default function PetalApp() {
     });
     setActiveTab("matches");
     setMatchesLoading(true);
+    const profile = deriveClinicProfile(storyData.cleanedStory, zipCode, {
+      duration: storyData.duration,
+      ageRange: storyData.ageRange,
+      supportNeed: storyData.supportGoal,
+      hintCondition: storyData.condition,
+    });
+    setClinicProfile(profile);
+    setClinicMatchSymptoms([]);
+    if (/^\d{5}(?:-\d{4})?$/.test(zipCode)) void runClinicSearch(profile);
     try {
       const res = await fetch("/api/match", {
         method: "POST",
@@ -113,7 +193,6 @@ export default function PetalApp() {
     setChatInitialQuestion(
       `Have you visited ${name}? I'm looking for personal experiences with this clinic, if you feel comfortable sharing.`
     );
-
   };
 
   const handleBackToClinics = () => {
@@ -131,6 +210,11 @@ export default function PetalApp() {
     setSharedClinicExperiences((previous) => ({ ...previous, [name]: submission }));
   };
 
+  const handleOpenClinicMatches = (symptoms: ClinicSymptom[]) => {
+    setClinicMatchSymptoms(symptoms);
+    setActiveTab("matches");
+  };
+
   // Block & Report actions
   const handleBlockUser = (peerAlias: string) => {
     setBlockedAliases((prev) => [...prev, peerAlias]);
@@ -146,6 +230,12 @@ export default function PetalApp() {
   const handleDeleteAllData = () => {
     setSavedStory(null);
     setMatchResults([]);
+    setClinicProfile(null);
+    clinicRequestId.current += 1;
+    setClinicSearch({ key: "", clinics: [], loading: false, error: null, loaded: false });
+    setZipCode("");
+    localStorage.removeItem("petal_clinic_zip");
+    setClinicMatchSymptoms([]);
     setConnectionStates({});
     setBlockedAliases([]);
     setCareLocation("");
@@ -196,11 +286,27 @@ export default function PetalApp() {
             <MatchesScreen
               matches={availableMatches}
               isLoading={matchesLoading}
+              clinicMatchSymptoms={clinicMatchSymptoms}
               connectionStates={connectionStates}
               onConnectRequest={handleConnectRequest}
               onSimulatePeerAccept={handleSimulatePeerAccept}
               onDeclineMatch={handleDeclineMatch}
               onOpenChatWithMatch={handleOpenChatWithMatch}
+            />
+          )}
+
+          {activeTab === "clinics" && (
+            <ClinicsScreen
+              hasStory={!!savedStory}
+              profile={clinicProfile}
+              clinics={clinicSearch.clinics}
+              loading={clinicSearch.loading}
+              error={clinicSearch.error}
+              zip={zipCode}
+              onZipChange={handleZipChange}
+              onRetry={() => clinicProfile && void runClinicSearch(clinicProfile, true)}
+              onGoToStory={() => setActiveTab("story")}
+              onOpenMatches={handleOpenClinicMatches}
             />
           )}
 
@@ -243,6 +349,8 @@ export default function PetalApp() {
               onResetAgeGate={handleResetAgeGate}
               anonymousId={anonymousId}
               hasStory={!!savedStory}
+              zipCode={zipCode}
+              onZipChange={handleZipChange}
             />
           )}
         </main>

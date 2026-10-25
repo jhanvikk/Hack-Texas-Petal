@@ -14,6 +14,7 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import { MatchedStory } from "@/lib/sampleData";
+import { ClinicSymptom } from "@/lib/clinics";
 
 export interface MatchConnectionState {
   [storyId: string]: "idle" | "requested" | "connected" | "declined";
@@ -34,6 +35,7 @@ interface MatchesScreenProps {
   onSimulatePeerAccept: (storyId: string) => void;
   onDeclineMatch: (storyId: string) => void;
   onOpenChatWithMatch: (match: MatchedStory) => void;
+  clinicMatchSymptoms?: ClinicSymptom[];
 }
 
 export function MatchesScreen({
@@ -48,13 +50,35 @@ export function MatchesScreen({
   onSimulatePeerAccept,
   onDeclineMatch,
   onOpenChatWithMatch,
+  clinicMatchSymptoms = [],
 }: MatchesScreenProps) {
   const [activeInfoNotice, setActiveInfoNotice] = useState(true);
   const [showExperienceForm, setShowExperienceForm] = useState(false);
   const [experienceRating, setExperienceRating] = useState(0);
   const [experienceText, setExperienceText] = useState("");
 
-  const visibleMatches = matches.filter(
+  const symptomPatterns: Record<ClinicSymptom, RegExp> = {
+    heavy_bleeding: /heavy bleeding|heavy flow|fibroid|anemia/,
+    severe_cramps: /cramp|dysmenorrhea|period pain/,
+    irregular_cycles: /irregular cycle|irregular period|pcos|polycystic/,
+    pelvic_pain: /pelvic pain|endometriosis|adenomyosis/,
+    pain_with_sex: /pain with sex|painful intercourse|pelvic pain|endometriosis/,
+    fatigue: /fatigue|exhaustion|low energy/,
+    mood_changes_premenstrual: /pmdd|mood changes|mood drop|premenstrual/,
+    hot_flashes: /hot flash|night sweat|menopause/,
+    spotting_between_periods: /spotting|bleeding between/,
+    long_periods: /long period|prolonged period|heavy bleeding/,
+    clots: /blood clot|clots|fibroid/,
+  };
+
+  const conditionMatches = clinicMatchSymptoms.length
+    ? matches.filter((match) => {
+        const searchText = `${match.condition} ${match.tags.join(" ")} ${match.summary}`.toLowerCase();
+        return clinicMatchSymptoms.some((symptom) => symptomPatterns[symptom].test(searchText));
+      })
+    : matches;
+
+  const visibleMatches = conditionMatches.filter(
     (match) => connectionStates[match.id] !== "declined"
   );
 

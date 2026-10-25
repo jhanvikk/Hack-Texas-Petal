@@ -8,6 +8,8 @@ interface SettingsScreenProps {
   onResetAgeGate: () => void;
   anonymousId?: string;
   hasStory: boolean;
+  zipCode: string;
+  onZipChange: (zip: string) => void;
 }
 
 export function SettingsScreen({
@@ -15,6 +17,8 @@ export function SettingsScreen({
   onResetAgeGate,
   anonymousId = "anon_petal_839a",
   hasStory,
+  zipCode,
+  onZipChange,
 }: SettingsScreenProps) {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [confirmedTyped, setConfirmedTyped] = useState("");
@@ -55,6 +59,21 @@ export function SettingsScreen({
         </div>
       )}
 
+      <section className="bg-white rounded-2xl p-5 border border-[#EFE6DC] space-y-2">
+        <label htmlFor="settings-zip" className="block text-sm font-bold text-[#2C2220]">Clinic search ZIP code</label>
+        <p className="text-xs leading-relaxed text-[#6B5C58]">This ZIP is saved on this device. Clinic searches send only your ZIP and a specialty, never your story.</p>
+        <input
+          id="settings-zip"
+          inputMode="numeric"
+          autoComplete="postal-code"
+          maxLength={10}
+          value={zipCode}
+          onChange={(event) => onZipChange(event.target.value)}
+          placeholder="e.g. 78701"
+          className="w-full min-h-11 px-3 rounded-xl bg-[#FAF6F0] border border-[#E5DCD2] text-sm focus:outline-none focus:ring-2 focus:ring-[#D9534F]"
+        />
+      </section>
+
       {/* Plain Words Privacy Breakdown */}
       <div className="bg-white rounded-3xl p-5 sm:p-7 border border-[#EFE6DC] shadow-xs space-y-4">
         <h2 className="text-base sm:text-lg font-bold text-[#2C2220] flex items-center gap-2">
@@ -71,6 +90,7 @@ export function SettingsScreen({
             <ul className="space-y-1 text-[#6B5C58] list-disc list-inside text-xs leading-relaxed">
               <li>Cleaned story (names, emails, phones stripped).</li>
               <li>Tappable tags (condition, age band, goals).</li>
+              <li>ZIP code for nearby clinic searches.</li>
               <li>Mathematical embedding for finding matches.</li>
               <li>Active chat messages between mutual peers.</li>
             </ul>
@@ -83,7 +103,7 @@ export function SettingsScreen({
             </p>
             <ul className="space-y-1 text-[#7F1D1D] list-disc list-inside text-xs leading-relaxed">
               <li>No real names, emails, or phone numbers.</li>
-              <li>No IP addresses or location tracking.</li>
+              <li>No IP addresses or background location tracking.</li>
               <li>No third-party analytics or ad trackers.</li>
               <li>No remote fonts contacting outside servers.</li>
             </ul>

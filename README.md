@@ -2,6 +2,17 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Run the app
+
+Install dependencies and start the development server:
+
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000). The site can be opened without backend credentials, but peer matching requires the Supabase project URL and service role key. Copy `.env.example` to `.env.local` and fill in those values to enable matching. Keep the service role key server-side and never commit `.env.local`.
+
 ### Enable Nearby Doctor Search
 
 1. Get an API key from your [SerpAPI account](https://serpapi.com/manage-api-key).
