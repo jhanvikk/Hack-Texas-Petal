@@ -122,3 +122,5 @@ export const SAMPLE_STORIES: SampleStory[] = [
     tags: ["Symptom Tracking", "New Symptoms", "Mentorship", "Gentle Guidance"],
   },
 ];
+
+export type MatchedStory = SampleStory & { score: number; why: string };

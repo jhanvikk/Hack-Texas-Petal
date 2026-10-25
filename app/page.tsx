@@ -8,7 +8,7 @@ import { MatchesScreen, MatchConnectionState } from "@/components/MatchesScreen"
 import { ChatScreen } from "@/components/ChatScreen";
 import { SettingsScreen } from "@/components/SettingsScreen";
 import { EmergencyModal } from "@/components/EmergencyModal";
-import { SAMPLE_STORIES, SampleStory } from "@/lib/sampleData";
+import { SAMPLE_STORIES, SampleStory, MatchedStory } from "@/lib/sampleData";
 
 export default function PetalApp() {
   const [activeTab, setActiveTab] = useState<NavTab>("story");
@@ -17,7 +17,7 @@ export default function PetalApp() {
   // User Anonymous State
   const [userAlias] = useState("Quiet Willow");
   const [anonymousId, setAnonymousId] = useState("anon_usr_7f9a2b");
-  
+
   // Story & Matches State
   const [savedStory, setSavedStory] = useState<{
     storyText: string;
@@ -28,21 +28,20 @@ export default function PetalApp() {
     supportGoal: string;
   } | null>(null);
 
+  const [matchResults, setMatchResults] = useState<{ id: string; score: number; why: string }[]>([]);
+  const [matchesLoading, setMatchesLoading] = useState(false);
+
   // Block list state
   const [blockedAliases, setBlockedAliases] = useState<string[]>([]);
 
-  // Connection states for each match
-  const [connectionStates, setConnectionStates] = useState<MatchConnectionState>({
-    "sample-1": "connected", // Pre-connected for immediate demo testing if desired!
-    "sample-2": "idle",
-    "sample-3": "idle",
-  });
+  // Connection states for each match (missing keys count as "idle")
+  const [connectionStates, setConnectionStates] = useState<MatchConnectionState>({});
 
   // Active chat peer
   const [activeChatPeer, setActiveChatPeer] = useState<SampleStory>(SAMPLE_STORIES[0]);
 
   // Handle Story Submission
-  const handleStorySubmitted = (storyData: {
+  const handleStorySubmitted = async (storyData: {
     storyText: string;
     cleanedStory: string;
     ageRange: string;
@@ -53,31 +52,41 @@ export default function PetalApp() {
   }) => {
     setSavedStory(storyData);
     setActiveTab("matches");
+    setMatchesLoading(true);
+    try {
+      const res = await fetch("/api/match", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          cleanedStory: storyData.cleanedStory, // never send the raw storyText
+          condition: storyData.condition,
+          duration: storyData.duration,
+          ageRange: storyData.ageRange,
+        }),
+      });
+      const data = await res.json();
+      setMatchResults(res.ok ? data.matches : []);
+    } catch {
+      setMatchResults([]);
+    } finally {
+      setMatchesLoading(false);
+    }
   };
 
   // Connection flow
   const handleConnectRequest = (storyId: string) => {
-    setConnectionStates((prev) => ({
-      ...prev,
-      [storyId]: "requested",
-    }));
+    setConnectionStates((prev) => ({ ...prev, [storyId]: "requested" }));
   };
 
   const handleSimulatePeerAccept = (storyId: string) => {
-    setConnectionStates((prev) => ({
-      ...prev,
-      [storyId]: "connected",
-    }));
+    setConnectionStates((prev) => ({ ...prev, [storyId]: "connected" }));
   };
 
   const handleDeclineMatch = (storyId: string) => {
-    setConnectionStates((prev) => ({
-      ...prev,
-      [storyId]: "declined",
-    }));
+    setConnectionStates((prev) => ({ ...prev, [storyId]: "declined" }));
   };
 
-  const handleOpenChatWithMatch = (match: SampleStory) => {
+  const handleOpenChatWithMatch = (match: MatchedStory) => {
     setActiveChatPeer(match);
     setActiveTab("chat");
   };
@@ -96,11 +105,8 @@ export default function PetalApp() {
   // Delete all data (hard delete simulation)
   const handleDeleteAllData = () => {
     setSavedStory(null);
-    setConnectionStates({
-      "sample-1": "idle",
-      "sample-2": "idle",
-      "sample-3": "idle",
-    });
+    setMatchResults([]);
+    setConnectionStates({});
     setBlockedAliases([]);
     setAnonymousId(`anon_usr_${Math.random().toString(36).substring(2, 8)}`);
     setActiveTab("story");
@@ -116,24 +122,25 @@ export default function PetalApp() {
     }
   };
 
-  // Filter out blocked peers
-  const availableMatches = SAMPLE_STORIES.filter(
-    (story) => !blockedAliases.includes(story.alias)
-  );
+  // Matches from the API, minus blocked peers
+  const availableMatches: MatchedStory[] = matchResults
+    .map((r) => {
+      const s = SAMPLE_STORIES.find((x) => x.id === r.id);
+      return s ? { ...s, score: r.score, why: r.why } : null;
+    })
+    .filter((m): m is MatchedStory => m !== null && !blockedAliases.includes(m.alias));
 
   return (
     <AgeGate>
       <div className="min-h-screen bg-[#FAF6F0] flex flex-col selection:bg-[#FDE8E7] selection:text-[#9F1239]">
-        {/* Navigation Bar */}
         <Navbar
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           matchesCount={availableMatches.slice(0, 3).length}
-          unreadChatCount={connectionStates["sample-1"] === "connected" ? 1 : 0}
+          unreadChatCount={Object.values(connectionStates).filter((s) => s === "connected").length}
           onOpenEmergencyModal={() => setIsEmergencyModalOpen(true)}
         />
 
-        {/* Main Content Area */}
         <main className="flex-1 max-w-2xl w-full mx-auto px-4 pt-5">
           {activeTab === "story" && (
             <StoryScreen
@@ -145,6 +152,7 @@ export default function PetalApp() {
           {activeTab === "matches" && (
             <MatchesScreen
               matches={availableMatches}
+              isLoading={matchesLoading}
               connectionStates={connectionStates}
               onConnectRequest={handleConnectRequest}
               onSimulatePeerAccept={handleSimulatePeerAccept}
@@ -173,7 +181,6 @@ export default function PetalApp() {
           )}
         </main>
 
-        {/* Global Emergency 988 Modal */}
         <EmergencyModal
           isOpen={isEmergencyModalOpen}
           onClose={() => setIsEmergencyModalOpen(false)}
