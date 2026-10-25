@@ -210,7 +210,7 @@ export function StoryScreen({ onStorySubmitted, savedStory }: StoryScreenProps) 
                   onClick={() => setAgeRange(item)}
                   className={`min-h-[44px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold transition-all border cursor-pointer ${
                     ageRange === item
-                      ? "bg-[#D9534F] text-white border-[#D9534F] shadow-xs"
+                      ? "bg-[#c66974] text-white border-[#c66974] shadow-xs"
                       : "bg-[#FAF6F0] text-[#6B5C58] border-[#E5DCD2] hover:bg-[#F3ECE2]"
                   }`}
                 >
@@ -233,7 +233,7 @@ export function StoryScreen({ onStorySubmitted, savedStory }: StoryScreenProps) 
                   onClick={() => setDuration(item)}
                   className={`min-h-[44px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold transition-all border cursor-pointer ${
                     duration === item
-                      ? "bg-[#D9534F] text-white border-[#D9534F] shadow-xs"
+                      ? "bg-[#c66974] text-white border-[#c66974] shadow-xs"
                       : "bg-[#FAF6F0] text-[#6B5C58] border-[#E5DCD2] hover:bg-[#F3ECE2]"
                   }`}
                 >
@@ -257,7 +257,7 @@ export function StoryScreen({ onStorySubmitted, savedStory }: StoryScreenProps) 
                   onClick={() => setCondition(item)}
                   className={`min-h-[44px] py-2 px-3.5 rounded-full text-xs sm:text-sm font-semibold transition-all border cursor-pointer ${
                     condition === item
-                      ? "bg-[#C85A32] text-white border-[#C85A32] shadow-xs"
+                      ? "bg-[#c66974] text-white border-[#c66974] shadow-xs"
                       : "bg-[#FAF6F0] text-[#6B5C58] border-[#E5DCD2] hover:bg-[#F3ECE2]"
                   }`}
                 >
@@ -280,7 +280,7 @@ export function StoryScreen({ onStorySubmitted, savedStory }: StoryScreenProps) 
                   onClick={() => setSupportGoal(item)}
                   className={`min-h-[48px] py-3 px-4 rounded-2xl text-xs sm:text-sm font-semibold text-left transition-all border cursor-pointer flex items-center justify-between ${
                     supportGoal === item
-                      ? "bg-[#4D7C59] text-white border-[#4D7C59] shadow-xs"
+                      ? "bg-[#c66974] text-white border-[#c66974] shadow-xs"
                       : "bg-[#FAF6F0] text-[#6B5C58] border-[#E5DCD2] hover:bg-[#F3ECE2]"
                   }`}
                 >
@@ -297,7 +297,7 @@ export function StoryScreen({ onStorySubmitted, savedStory }: StoryScreenProps) 
           <button
             type="submit"
             disabled={!storyText.trim() || isSubmitting}
-            className="w-full min-h-[56px] bg-[#D9534F] hover:bg-[#C54541] disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.99] text-white font-bold py-4 px-6 rounded-2xl shadow-sm text-base sm:text-lg transition-all cursor-pointer flex items-center justify-center gap-2"
+            className="w-full min-h-[56px] bg-[#b8757e] hover:bg-[#c66974] active:bg-[#c66974] disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.99] text-white font-bold py-4 px-6 rounded-2xl shadow-sm text-base sm:text-lg transition-all cursor-pointer flex items-center justify-center gap-2"
           >
             {isSubmitting ? (
               <span>Finding compassionate matches...</span>
