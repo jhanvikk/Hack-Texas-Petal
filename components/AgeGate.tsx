@@ -61,8 +61,8 @@ export function AgeGate({ children }: AgeGateProps) {
   if (status === "blocked") {
     return (
       <div className="min-h-screen bg-[#e6abb2] flex items-center justify-center p-4 sm:p-6">
-        <div className="max-w-md w-full bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-[#EFE6DC] text-center space-y-5">
-          <div className="w-16 h-16 bg-[#FDE8E7] text-[#D9534F] rounded-full flex items-center justify-center mx-auto shadow-xs">
+        <div className="max-w-md w-full bg-[#f4db9a] rounded-3xl p-6 sm:p-8 shadow-lg border border-[#dfc278] text-center space-y-5">
+          <div className="w-16 h-16 bg-white/85 text-[#c66974] border border-[#dfc278] rounded-full flex items-center justify-center mx-auto shadow-xs">
             <Heart className="w-8 h-8 fill-current" />
           </div>
 
@@ -70,12 +70,12 @@ export function AgeGate({ children }: AgeGateProps) {
             <h1 className="text-2xl font-bold text-[#2C2220]">
               Caring Support for You
             </h1>
-            <p className="text-sm text-[#6B5C58] leading-relaxed">
+            <p className="text-sm text-[#523d13] leading-relaxed">
               Thank you for visiting Petal. Because our peer-to-peer discussions touch on adult medical experiences, this sanctuary is designated for individuals <span className="font-semibold text-[#2C2220]">18 years of age and older</span>.
             </p>
           </div>
 
-          <div className="bg-[#FFF5ED] border border-[#FADCC7] p-4 rounded-2xl text-left text-xs sm:text-sm text-[#7A3E26] space-y-2">
+          <div className="bg-white/90 border border-[#dfc278] p-4 rounded-2xl text-left text-xs sm:text-sm text-[#523d13] space-y-2 shadow-2xs">
             <p className="font-semibold text-[#8C3E1F] flex items-center gap-1.5">
               <ShieldAlert className="w-4 h-4" /> Trusted Resources for Youth & Teens:
             </p>
@@ -85,7 +85,7 @@ export function AgeGate({ children }: AgeGateProps) {
                   href="https://www.teenline.org"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="underline font-medium hover:text-[#2C2220] inline-flex items-center gap-1"
+                  className="underline font-medium hover:text-[#2C2220] inline-flex items-center gap-1 text-[#8C3E1F]"
                 >
                   Teen Line (Peer-to-peer teen support) <ExternalLink className="w-3 h-3" />
                 </a>
@@ -95,7 +95,7 @@ export function AgeGate({ children }: AgeGateProps) {
                   href="https://www.thetrevorproject.org"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="underline font-medium hover:text-[#2C2220] inline-flex items-center gap-1"
+                  className="underline font-medium hover:text-[#2C2220] inline-flex items-center gap-1 text-[#8C3E1F]"
                 >
                   The Trevor Project (24/7 youth lifeline) <ExternalLink className="w-3 h-3" />
                 </a>
@@ -109,7 +109,7 @@ export function AgeGate({ children }: AgeGateProps) {
           <div className="pt-2">
             <button
               onClick={handleReset}
-              className="text-xs text-[#998884] hover:text-[#2C2220] underline inline-flex items-center gap-1"
+              className="text-xs text-[#78591d] hover:text-[#2C2220] underline inline-flex items-center gap-1 cursor-pointer transition-colors"
             >
               <RefreshCw className="w-3 h-3" /> Made a mistake? Re-check age confirmation
             </button>
@@ -121,25 +121,25 @@ export function AgeGate({ children }: AgeGateProps) {
 
   // First-visit verification modal
   return (
-    <div className="min-h-screen bg-[#e6abb2] flex items-start sm:items-center justify-center p-4 sm:p-6 pt-4 sm:pt-6">
-      {/* Larger rectangle is now yellow (#f4db9a), shifted higher with -mt-2 sm:-mt-6 */}
-      <div className="max-w-md w-full bg-[#f4db9a] rounded-3xl p-5 sm:p-7 shadow-lg border border-[#dfc278] text-center space-y-4 -mt-1 sm:-mt-6">
-        {/* Logo 2x bigger (size="3xl", frameless) */}
-        <div className="flex justify-center pt-1">
+    <div className="min-h-screen bg-[#e6abb2] flex items-start sm:items-center justify-center p-4 sm:p-6 pt-3 sm:pt-4">
+      {/* Yellow rectangle shifted higher up */}
+      <div className="max-w-md w-full bg-[#f4db9a] rounded-3xl pt-3 sm:pt-4 px-5 sm:px-7 pb-6 sm:pb-7 shadow-lg border border-[#dfc278] text-center space-y-4 -mt-2 sm:-mt-8">
+        {/* Logo shifted higher up towards the top */}
+        <div className="flex justify-center -mt-1 sm:-mt-2">
           <PetalLogo size="3xl" frameless />
         </div>
 
-        {/* 'A Safe Haven for Her Health', 'Welcome to', 'Petal' shifted UP between logo and bottom text */}
-        <div className="-mt-3 sm:-mt-5 space-y-1.5">
+        {/* 'A Safe Haven for Her Health', 'Welcome to', 'Petal' positioned higher with spacious, uncompressed layout */}
+        <div className="-mt-3 sm:-mt-4 space-y-2">
           <div className="inline-block px-3.5 py-1 rounded-full text-xs font-semibold bg-white/85 text-[#8b4650] border border-[#dfc278] shadow-2xs">
             A Safe Haven for Her Health
           </div>
 
-          <div className="pt-0.5">
+          <div className="pt-1">
             <span className="block text-xs sm:text-sm uppercase tracking-[0.25em] font-medium text-[#784e54]">
               Welcome to
             </span>
-            <h1 className="text-5xl sm:text-6xl font-black text-[#c66974] tracking-tight leading-none mt-1">
+            <h1 className="text-5xl sm:text-6xl font-black text-[#c66974] tracking-tight leading-none mt-1 font-poppins">
               Petal
             </h1>
           </div>

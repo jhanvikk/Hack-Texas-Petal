@@ -30,16 +30,12 @@ export function Navbar({
             onClick={() => setActiveTab("story")}
             className="flex items-center gap-0 group text-left cursor-pointer"
           >
-            <PetalLogo
-              size="lg"
-              frameless
-              className="-translate-x-3.5 scale-[1.71] group-hover:scale-[1.76] transition-transform"
-            />
-            <div className="-ml-4 scale-[0.86] origin-left">
-              <span className="font-extrabold text-[#2C2220] text-xl tracking-tight block leading-none">
+            <PetalLogo size="sm" className="group-hover:scale-105 transition-transform" />
+            <div>
+              <span className="font-extrabold text-[#2C2220] text-lg tracking-tight block leading-none">
                 Petal
               </span>
-              <span className="text-xs font-semibold text-[#8b4650] tracking-wide">
+              <span className="text-[11px] font-semibold text-[#8b4650] tracking-wide">
                 A Safe Haven for Her Health
               </span>
             </div>
@@ -56,10 +52,10 @@ export function Navbar({
           <button
             type="button"
             onClick={onOpenEmergencyModal}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FFF0EE] border border-[#FAD4D2] hover:bg-[#FDE8E7] text-[#C54541] rounded-full text-xs font-semibold shadow-2xs transition-all active:scale-95 cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-[#f4db9a] border border-[#dfc278] hover:bg-[#ebd087] text-[#4a350c] rounded-full text-xs font-bold shadow-2xs transition-all active:scale-95 cursor-pointer"
             title="Crisis and Urgent Support Resources"
           >
-            <LifeBuoy className="w-3.5 h-3.5" />
+            <LifeBuoy className="w-3.5 h-3.5 text-[#6c4e12]" />
             <span>988 Help</span>
           </button>
         </div>
@@ -73,8 +69,8 @@ export function Navbar({
             type="button"
             onClick={() => setActiveTab("story")}
             className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-1.5 sm:py-[7.5px] px-1 rounded-xl text-[10px] sm:text-sm font-semibold transition-all cursor-pointer ${activeTab === "story"
-                ? "bg-white text-[#D9534F] shadow-xs"
-                : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"
+              ? "bg-white text-[#D9534F] shadow-xs"
+              : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"
               }`}
           >
             <Heart className={`w-4 h-4 ${activeTab === "story" ? "fill-[#D9534F]" : ""}`} />
@@ -86,8 +82,8 @@ export function Navbar({
             type="button"
             onClick={() => setActiveTab("matches")}
             className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-1.5 sm:py-[7.5px] px-1 rounded-xl text-[10px] sm:text-sm font-semibold transition-all cursor-pointer relative ${activeTab === "matches"
-                ? "bg-white text-[#D9534F] shadow-xs"
-                : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"
+              ? "bg-white text-[#D9534F] shadow-xs"
+              : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"
               }`}
           >
             <Users className="w-4 h-4" />
@@ -104,8 +100,8 @@ export function Navbar({
             type="button"
             onClick={() => setActiveTab("chat")}
             className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-1.5 sm:py-[7.5px] px-1 rounded-xl text-[10px] sm:text-sm font-semibold transition-all cursor-pointer relative ${activeTab === "chat"
-                ? "bg-white text-[#D9534F] shadow-xs"
-                : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"
+              ? "bg-white text-[#D9534F] shadow-xs"
+              : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"
               }`}
           >
             <MessageCircle className="w-4 h-4" />
@@ -120,8 +116,8 @@ export function Navbar({
             type="button"
             onClick={() => setActiveTab("care")}
             className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-1.5 sm:py-[7.5px] px-1 rounded-xl text-[10px] sm:text-sm font-semibold transition-all cursor-pointer ${activeTab === "care"
-                ? "bg-white text-[#D9534F] shadow-xs"
-                : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"
+              ? "bg-white text-[#D9534F] shadow-xs"
+              : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"
               }`}
           >
             <Stethoscope className="w-4 h-4" />
@@ -132,11 +128,10 @@ export function Navbar({
           <button
             type="button"
             onClick={() => setActiveTab("clinics")}
-            className={`flex items-center justify-center gap-1 py-[7.5px] px-1 rounded-xl text-[11px] sm:text-sm font-semibold transition-all cursor-pointer ${
-              activeTab === "clinics"
+            className={`flex items-center justify-center gap-1 py-[7.5px] px-1 rounded-xl text-[11px] sm:text-sm font-semibold transition-all cursor-pointer ${activeTab === "clinics"
                 ? "bg-white text-[#D9534F] shadow-xs"
                 : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"
-            }`}
+              }`}
           >
             <Stethoscope className="w-4 h-4 shrink-0" />
             <span>Clinics</span>
@@ -147,8 +142,8 @@ export function Navbar({
             type="button"
             onClick={() => setActiveTab("settings")}
             className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-1.5 sm:py-[7.5px] px-1 rounded-xl text-[10px] sm:text-sm font-semibold transition-all cursor-pointer ${activeTab === "settings"
-                ? "bg-white text-[#D9534F] shadow-xs"
-                : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"
+              ? "bg-white text-[#D9534F] shadow-xs"
+              : "text-[#6B5C58] hover:text-[#2C2220] hover:bg-white/40"
               }`}
           >
             <Settings className="w-4 h-4" />

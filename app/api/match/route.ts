@@ -109,7 +109,7 @@ export async function POST(req: Request) {
         (match: unknown): match is { id: string; score: number; why: string } =>
           match !== null
       )
-      .sort((a, b) => b.score - a.score)
+      .sort((a: any, b: any) => b.score - a.score)
       .slice(0, 5);
 
     return NextResponse.json({ matches });
