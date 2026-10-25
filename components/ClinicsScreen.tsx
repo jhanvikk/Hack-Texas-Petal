@@ -66,10 +66,10 @@ export function ClinicsScreen({
     return (
       <div className="space-y-5 pb-12">
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#EFE6DC] text-center space-y-4">
-          <Stethoscope className="w-8 h-8 text-[#4D7C59] mx-auto" />
+          <Stethoscope className="w-8 h-8 text-[#C54541] mx-auto" />
           <h1 className="text-xl font-bold text-[#2C2220]">Clinicians who listen</h1>
           <p className="text-sm text-[#6B5C58]">Share your story and we&apos;ll find clinicians near you.</p>
-          <button type="button" onClick={onGoToStory} className="min-h-11 px-5 py-2.5 bg-[#D9534F] text-white rounded-xl text-sm font-semibold inline-flex items-center justify-center gap-2">
+          <button type="button" onClick={onGoToStory} className="min-h-11 px-5 py-2.5 bg-[#b8757e] hover:bg-[#c66974] active:bg-[#c66974] text-white rounded-xl text-sm font-semibold inline-flex items-center justify-center gap-2 transition-colors">
             Share your story <ArrowRight className="w-4 h-4" />
           </button>
         </div>

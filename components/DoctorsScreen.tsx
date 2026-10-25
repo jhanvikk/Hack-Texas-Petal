@@ -150,7 +150,7 @@ export function DoctorsScreen({
   return (
     <div className="space-y-5 pb-12">
       <section className="space-y-2">
-        <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#4D7C59]">
+        <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#C54541]">
           <Stethoscope className="h-4 w-4" />
           Local care directory
         </div>
@@ -181,7 +181,7 @@ export function DoctorsScreen({
         <button
           type="submit"
           disabled={isLoading}
-          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#4D7C59] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#3D6647] disabled:cursor-wait disabled:opacity-60"
+          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#b8757e] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#c66974] disabled:cursor-wait disabled:opacity-60"
         >
           <Search className="h-4 w-4" />
           {isLoading ? "Searching..." : "Find care"}
@@ -221,7 +221,7 @@ export function DoctorsScreen({
         </div>
       </section>
 
-      <div className="flex items-start gap-2.5 rounded-xl border border-[#D5E6D8] bg-[#EBF3ED] p-3.5 text-xs leading-relaxed text-[#3D6647]">
+      <div className="flex items-start gap-2.5 rounded-xl border border-[#FAD4D2] bg-[#FDE8E7] p-3.5 text-xs leading-relaxed text-[#C54541]">
         <Stethoscope className="mt-0.5 h-4 w-4 shrink-0" />
         <p>
           Only your location, selected condition, and matching symptom labels are sent to SerpAPI and Google; your story text is not sent. Listings do not confirm services, appointments, insurance, or credentials. Petal does not verify providers.

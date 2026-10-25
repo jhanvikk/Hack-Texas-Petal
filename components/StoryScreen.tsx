@@ -167,7 +167,7 @@ export function StoryScreen({ onStorySubmitted, savedStory }: StoryScreenProps) 
           />
 
           {/* Privacy Guarantee Note */}
-          <div className="flex items-center gap-2 text-xs text-[#4D7C59] bg-[#EBF3ED] px-3.5 py-2 rounded-xl">
+          <div className="flex items-center gap-2 text-xs text-[#C54541] bg-[#FDE8E7] px-3.5 py-2 rounded-xl">
             <Shield className="w-4 h-4 shrink-0" />
             <span>
               Zero identification: Original raw text is never stored. Only anonymized tags and similarity vectors are kept.

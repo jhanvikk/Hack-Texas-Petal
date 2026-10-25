@@ -37,7 +37,7 @@ export function SettingsScreen({
     <div className="space-y-6 pb-12">
       {/* Header */}
       <div className="bg-white rounded-3xl p-5 sm:p-7 border border-[#EFE6DC] shadow-xs space-y-2">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#EBF3ED] text-[#4D7C59] rounded-full text-xs font-semibold">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#FDE8E7] text-[#C54541] rounded-full text-xs font-semibold">
           <Lock className="w-3.5 h-3.5" />
           Privacy & Data Control
         </div>
@@ -78,7 +78,7 @@ export function SettingsScreen({
       <div className="bg-white rounded-3xl p-5 sm:p-7 border border-[#EFE6DC] shadow-xs space-y-4">
         <h2 className="text-base sm:text-lg font-bold text-[#2C2220] flex items-center gap-2">
           <EyeOff className="w-5 h-5 text-[#D9534F]" />
-          What Petal Stores (In Plain Words)
+          What Petal Stores
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">

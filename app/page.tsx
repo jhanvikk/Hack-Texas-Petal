@@ -275,84 +275,86 @@ export default function PetalApp() {
         />
 
         <main className="flex-1 max-w-2xl w-full mx-auto px-4 pt-5">
-          {activeTab === "story" && (
-            <StoryScreen
-              onStorySubmitted={handleStorySubmitted}
-              savedStory={savedStory}
-            />
-          )}
+          <div key={activeTab} className="tab-content-enter">
+            {activeTab === "story" && (
+              <StoryScreen
+                onStorySubmitted={handleStorySubmitted}
+                savedStory={savedStory}
+              />
+            )}
 
-          {activeTab === "matches" && (
-            <MatchesScreen
-              matches={availableMatches}
-              isLoading={matchesLoading}
-              clinicMatchSymptoms={clinicMatchSymptoms}
-              connectionStates={connectionStates}
-              onConnectRequest={handleConnectRequest}
-              onSimulatePeerAccept={handleSimulatePeerAccept}
-              onDeclineMatch={handleDeclineMatch}
-              onOpenChatWithMatch={handleOpenChatWithMatch}
-            />
-          )}
+            {activeTab === "matches" && (
+              <MatchesScreen
+                matches={availableMatches}
+                isLoading={matchesLoading}
+                clinicMatchSymptoms={clinicMatchSymptoms}
+                connectionStates={connectionStates}
+                onConnectRequest={handleConnectRequest}
+                onSimulatePeerAccept={handleSimulatePeerAccept}
+                onDeclineMatch={handleDeclineMatch}
+                onOpenChatWithMatch={handleOpenChatWithMatch}
+              />
+            )}
 
-          {activeTab === "clinics" && (
-            <ClinicsScreen
-              hasStory={!!savedStory}
-              profile={clinicProfile}
-              clinics={clinicSearch.clinics}
-              loading={clinicSearch.loading}
-              error={clinicSearch.error}
-              zip={zipCode}
-              onZipChange={handleZipChange}
-              onRetry={() => clinicProfile && void runClinicSearch(clinicProfile, true)}
-              onGoToStory={() => setActiveTab("story")}
-              onOpenMatches={handleOpenClinicMatches}
-            />
-          )}
+            {activeTab === "clinics" && (
+              <ClinicsScreen
+                hasStory={!!savedStory}
+                profile={clinicProfile}
+                clinics={clinicSearch.clinics}
+                loading={clinicSearch.loading}
+                error={clinicSearch.error}
+                zip={zipCode}
+                onZipChange={handleZipChange}
+                onRetry={() => clinicProfile && void runClinicSearch(clinicProfile, true)}
+                onGoToStory={() => setActiveTab("story")}
+                onOpenMatches={handleOpenClinicMatches}
+              />
+            )}
 
-          {activeTab === "chat" && (
-            <ChatScreen
-              peerAlias={activeChatPeer?.alias || "Gentle Fern"}
-              userAlias={userAlias}
-              initialQuestion={chatInitialQuestion}
-              clinicInquiry={isClinicInquiry}
-              onBlockUser={handleBlockUser}
-              onReportUser={handleReportUser}
-              onBackToMatches={() => setActiveTab("matches")}
-            />
-          )}
+            {activeTab === "chat" && (
+              <ChatScreen
+                peerAlias={activeChatPeer?.alias || "Gentle Fern"}
+                userAlias={userAlias}
+                initialQuestion={chatInitialQuestion}
+                clinicInquiry={isClinicInquiry}
+                onBlockUser={handleBlockUser}
+                onReportUser={handleReportUser}
+                onBackToMatches={() => setActiveTab("matches")}
+              />
+            )}
 
-          {activeTab === "care" && (
-            <DoctorsScreen
-              condition={savedStory?.condition ?? ""}
-              symptoms={savedStory?.searchSymptoms ?? []}
-              hasStory={!!savedStory}
-              initialLocation={careLocation}
-              onLocationChange={setCareLocation}
-              onAskPeerAboutClinic={handleAskPeerAboutClinic}
-              onBackToClinics={handleBackToClinics}
-              matches={availableMatches}
-              connectionStates={connectionStates}
-              clinicQuestion={clinicQuestion}
-              sharedClinicExperience={clinicQuestion ? sharedClinicExperiences[clinicQuestion.name] ?? null : null}
-              onShareClinicExperience={(submission) => clinicQuestion && handleShareClinicExperience(clinicQuestion.name, submission)}
-              onConnectRequest={handleConnectRequest}
-              onSimulatePeerAccept={handleSimulatePeerAccept}
-              onDeclineMatch={handleDeclineMatch}
-              onOpenChatWithMatch={handleOpenChatWithMatch}
-            />
-          )}
+            {activeTab === "care" && (
+              <DoctorsScreen
+                condition={savedStory?.condition ?? ""}
+                symptoms={savedStory?.searchSymptoms ?? []}
+                hasStory={!!savedStory}
+                initialLocation={careLocation}
+                onLocationChange={setCareLocation}
+                onAskPeerAboutClinic={handleAskPeerAboutClinic}
+                onBackToClinics={handleBackToClinics}
+                matches={availableMatches}
+                connectionStates={connectionStates}
+                clinicQuestion={clinicQuestion}
+                sharedClinicExperience={clinicQuestion ? sharedClinicExperiences[clinicQuestion.name] ?? null : null}
+                onShareClinicExperience={(submission) => clinicQuestion && handleShareClinicExperience(clinicQuestion.name, submission)}
+                onConnectRequest={handleConnectRequest}
+                onSimulatePeerAccept={handleSimulatePeerAccept}
+                onDeclineMatch={handleDeclineMatch}
+                onOpenChatWithMatch={handleOpenChatWithMatch}
+              />
+            )}
 
-          {activeTab === "settings" && (
-            <SettingsScreen
-              onDeleteAllData={handleDeleteAllData}
-              onResetAgeGate={handleResetAgeGate}
-              anonymousId={anonymousId}
-              hasStory={!!savedStory}
-              zipCode={zipCode}
-              onZipChange={handleZipChange}
-            />
-          )}
+            {activeTab === "settings" && (
+              <SettingsScreen
+                onDeleteAllData={handleDeleteAllData}
+                onResetAgeGate={handleResetAgeGate}
+                anonymousId={anonymousId}
+                hasStory={!!savedStory}
+                zipCode={zipCode}
+                onZipChange={handleZipChange}
+              />
+            )}
+          </div>
         </main>
 
         <EmergencyModal

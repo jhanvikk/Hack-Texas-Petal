@@ -207,7 +207,7 @@ export function ChatScreen({
             <div
               className={`max-w-[85%] sm:max-w-[75%] p-3.5 sm:p-4 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-2xs ${
                 msg.isSelf
-                  ? "bg-[#D9534F] text-white rounded-tr-xs"
+                  ? "bg-[#FDE8E7] text-[#2C2220] rounded-tr-xs"
                   : "bg-white text-[#2C2220] border border-[#EFE6DC] rounded-tl-xs"
               }`}
             >

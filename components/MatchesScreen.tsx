@@ -124,7 +124,7 @@ export function MatchesScreen({
 
       {/* Header */}
       <div className="space-y-2 rounded-3xl border border-[#EFE6DC] bg-white p-5 shadow-xs sm:p-7">
-        <div className="inline-flex items-center gap-1.5 rounded-full bg-[#EBF3ED] px-3 py-1 text-xs font-semibold text-[#4D7C59]">
+        <div className="inline-flex items-center gap-1.5 rounded-full bg-[#FDE8E7] px-3 py-1 text-xs font-semibold text-[#C54541]">
           <Sparkles className="h-3.5 w-3.5" />
           {clinicQuestion
             ? "Clinic visit experiences"
